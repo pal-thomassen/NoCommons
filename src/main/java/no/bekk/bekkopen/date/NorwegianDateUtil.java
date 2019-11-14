@@ -1,5 +1,6 @@
 package no.bekk.bekkopen.date;
 
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -240,7 +241,7 @@ public class NorwegianDateUtil {
 	 * @return The Calendar instance.
 	 */
 	private static Calendar dateToCalendar(Date date) {
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone(ZoneId.of("Europe/Oslo")));
 		cal.setTime(date);
 		return cal;
 	}

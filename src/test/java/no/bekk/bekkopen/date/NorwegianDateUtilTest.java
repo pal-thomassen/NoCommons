@@ -6,6 +6,8 @@ import org.junit.Test;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -129,6 +131,17 @@ public class NorwegianDateUtilTest {
 		assertEquals("25.12.2009", FORMAT().format(holidays[11]));
 		assertEquals("26.12.2009", FORMAT().format(holidays[12]));
 	}
+
+    @Test
+    public void midnight_may17_is_a_norwegian_holiday_even_if_the_jvm_timezone_is_gmt() {
+        System.setProperty("user.timezone", ZoneId.of("GMT").getId());
+
+        ZonedDateTime may17 =
+                ZonedDateTime.parse("2018-05-17T00:00:00+02:00")
+                             .withZoneSameInstant(ZoneId.of("Europe/Oslo"));
+
+        assertTrue(NorwegianDateUtil.isHoliday(Date.from(may17.toInstant())));
+    }
 
 	private void checkHoliday(String date) throws ParseException {
 		assertTrue(date, NorwegianDateUtil.isHoliday(FORMAT().parse(date)));
